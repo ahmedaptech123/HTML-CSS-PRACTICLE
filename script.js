@@ -68,10 +68,11 @@ form.addEventListener("submit", function (event) {
 
 
 
+
 const themeButton = document.createElement("button");
 
-themeButton.textContent = "🌙 Dark Mode";
-themeButton.className = "btn btn-dark position-fixed";
+themeButton.className = "btn position-fixed";
+
 themeButton.style.top = "80px";
 themeButton.style.right = "20px";
 themeButton.style.zIndex = "1000";
@@ -80,21 +81,43 @@ document.body.appendChild(themeButton);
 
 
 
+function updateThemeButton() {
+    if (document.body.classList.contains("dark-mode")) {
+        themeButton.textContent = "Light Mode";
+        themeButton.className = "btn btn-light position-fixed";
+    } else {
+        themeButton.textContent = "Dark Mode";
+        themeButton.className = "btn btn-dark position-fixed";
+    }
+    
+    
+    themeButton.style.top = "80px";
+    themeButton.style.right = "20px";
+    themeButton.style.zIndex = "1000";
+}
+
+
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+}
+
+updateThemeButton();
+
+
+
 themeButton.addEventListener("click", function () {
 
     document.body.classList.toggle("dark-mode");
 
+              
     if (document.body.classList.contains("dark-mode")) {
-        themeButton.textContent = "☀️ Light Mode";
-        themeButton.className = "btn btn-light position-fixed";
-        themeButton.style.top = "80px";
-        themeButton.style.right = "20px";
-        themeButton.style.zIndex = "1000";
+        localStorage.setItem("theme", "dark");
     } else {
-        themeButton.textContent = "🌙 Dark Mode";
-        themeButton.className = "btn btn-dark position-fixed";
-        themeButton.style.top = "80px";
-        themeButton.style.right = "20px";
-        themeButton.style.zIndex = "1000";
+        localStorage.setItem("theme", "light");
     }
-});
+
+    updateThemeButton();
+})
